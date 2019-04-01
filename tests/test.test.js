@@ -27,13 +27,14 @@ describe(`contract`, () => {
         stakeamount: "5.0000 EOS",
         maxatt: 10,
         eventowner: "test1",
-        att: 0
+        att: 0,
+        open: 1
       }
     ]);
   });
 
   test(`test1 cannot create a new event with an existing id`, async () => {
-    // expect.assertions(1);
+    expect.assertions(2);
     try {
       await sendTransaction({
         name: `createevent`,
@@ -56,7 +57,8 @@ describe(`contract`, () => {
           stakeamount: "5.0000 EOS",
           maxatt: 10,
           eventowner: "test1",
-          att: 0
+          att: 0,
+          open: 1
         }
       ]);
     }
@@ -216,6 +218,49 @@ describe(`contract`, () => {
         to: "rockup",
         quantity: "5.0000 EOS",
         memo: "party"
+      }
+    });
+  });
+
+  test(`test2 cannot close the event`, async () => {
+    expect.assertions(1);
+    try {
+      await sendTransaction({
+        name: "closeevent",
+        actor: "test2",
+        data: {
+          eventid: "eos21"
+        }
+      });
+    } catch (e) {
+      expect(e.message).toBe(`missing authority of test1`);
+    }
+  });
+
+  test(`test1 cannot roll call until he closes the event`, async () => {
+    expect.assertions(1);
+    try {
+      await sendTransaction({
+        name: "rollcall",
+        actor: "test1",
+        data: {
+          ticketid: "ap41",
+          attended: true
+        }
+      });
+    } catch (e) {
+      expect(e.message).toBe(
+        `assertion failure with message: event must be closed for rollcall`
+      );
+    }
+  });
+
+  test(`test1 can close his event`, async () => {
+    await sendTransaction({
+      name: "closeevent",
+      actor: "test1",
+      data: {
+        eventid: "eos21"
       }
     });
   });

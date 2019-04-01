@@ -23,6 +23,7 @@ public:
   ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, bool attended);
+  ACTION closeevent(eosio::name eventid);
   void transfer(eosio::name from, eosio::name to, eosio::asset quantity, std::string memo);
 
 private:
@@ -33,6 +34,7 @@ private:
     uint64_t maxatt;
     uint64_t att;
     eosio::name eventowner;
+    bool open;
 
     uint64_t primary_key() const { return eventid.value; }
   };

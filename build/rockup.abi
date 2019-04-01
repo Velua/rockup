@@ -1,7 +1,17 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr  1 12:19:02 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr  1 13:00:35 2019",
     "version": "eosio::abi/1.1",
     "structs": [
+        {
+            "name": "closeevent",
+            "base": "",
+            "fields": [
+                {
+                    "name": "eventid",
+                    "type": "name"
+                }
+            ]
+        },
         {
             "name": "createevent",
             "base": "",
@@ -47,6 +57,10 @@
                 {
                     "name": "eventowner",
                     "type": "name"
+                },
+                {
+                    "name": "open",
+                    "type": "bool"
                 }
             ]
         },
@@ -122,6 +136,11 @@
     ],
     "types": [],
     "actions": [
+        {
+            "name": "closeevent",
+            "type": "closeevent",
+            "ricardian_contract": ""
+        },
         {
             "name": "createevent",
             "type": "createevent",

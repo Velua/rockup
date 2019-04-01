@@ -20,6 +20,19 @@ void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxa
         row.stakeamount = stakeamt;
         row.maxatt = maxatt;
         row.eventowner = owner;
+        row.open = true;
+    });
+}
+
+void rockup::closeevent(name eventid)
+{
+    event_index eventsdb(_code, _code.value);
+    auto itr = eventsdb.find(eventid.value);
+    eosio_assert(itr != eventsdb.end(), "event does not exist");
+    require_auth(itr->eventowner);
+
+    eventsdb.modify(itr, same_payer, [&](auto &row) {
+        row.open = false;
     });
 }
 
@@ -32,6 +45,7 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
 
     auto itr = eventsdb.find(eventid.value);
     eosio_assert(itr != eventsdb.end(), "event does not exist");
+    eosio_assert(itr->open, "cannot create ticket for closed event");
     auto itr2 = ticketdb.find(ticketid.value);
     eosio_assert(itr2 == ticketdb.end(), "ticket id already exists");
 
@@ -54,6 +68,7 @@ void rockup::rollcall(name ticketid, bool attended)
     event_index eventsdb(_code, _code.value);
     auto itr2 = eventsdb.find(itr->eventid.value);
     eosio_assert(itr2 != eventsdb.end(), "event does not exist");
+    eosio_assert(!itr2->open, "event must be closed for rollcall");
     require_auth(itr2->eventowner);
 
     name to = attended ? itr->attendee : itr2->eventowner;
@@ -90,6 +105,7 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     auto itr2 = eventdb.find(itr->eventid.value);
     eosio_assert(itr2 != eventdb.end(), "event does not exist");
     eosio_assert(itr2->stakeamount == quantity, "incorrect eos amount sent");
+    eosio_assert(itr2->open, "event is closed");
 
     bool seatavailable = itr2->maxatt > itr2->att;
     eosio_assert(seatavailable, "no more seats available");
@@ -132,7 +148,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(rockup, (init)(createevent)(rollcall)(testreset)(reqticket))
+            EOSIO_DISPATCH_HELPER(rockup, (init)(createevent)(closeevent)(rollcall)(testreset)(reqticket))
         }
     }
 }
