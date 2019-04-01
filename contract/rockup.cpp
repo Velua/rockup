@@ -25,6 +25,7 @@ void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxa
 
 void rockup::reqticket(name attendee, name eventid, name ticketid)
 {
+    require_auth(attendee);
 
     event_index eventsdb(_code, _code.value);
     ticket_index ticketdb(_code, _code.value);
@@ -34,7 +35,7 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
     auto itr2 = ticketdb.find(ticketid.value);
     eosio_assert(itr2 == ticketdb.end(), "ticket id already exists");
 
-    ticketdb.emplace(_self, [&](auto &row) {
+    ticketdb.emplace(attendee, [&](auto &row) {
         row.ticketid = ticketid;
         row.eventid = eventid;
         row.attendee = attendee;
@@ -42,9 +43,26 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
     });
 }
 
-void rockup::rollcall(name ticketid, name eventowner, bool attended)
+void rockup::rollcall(name ticketid, bool attended)
 {
-    require_auth(eventowner);
+
+    ticket_index ticketsdb(_code, _code.value);
+    auto itr = ticketsdb.find(ticketid.value);
+    eosio_assert(itr != ticketsdb.end(), "ticket does not exist");
+    eosio_assert(itr->paid, "cannot role call on a unpaid ticket");
+
+    event_index eventsdb(_code, _code.value);
+    auto itr2 = eventsdb.find(itr->eventid.value);
+    eosio_assert(itr2 != eventsdb.end(), "event does not exist");
+    require_auth(itr2->eventowner);
+
+    name to = attended ? itr->attendee : itr2->eventowner;
+    string memo = attended ? "Thanks for coming!" : "Event Recovery";
+
+    action(permission_level{_self, "active"_n}, "eosio.token"_n, "transfer"_n, std::make_tuple(_self, to, itr2->stakeamount, memo))
+        .send();
+
+    ticketsdb.erase(itr);
 }
 
 void rockup::transfer(name from, name to, asset quantity, string memo)
@@ -71,17 +89,16 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
 
     auto itr2 = eventdb.find(itr->eventid.value);
     eosio_assert(itr2 != eventdb.end(), "event does not exist");
-    print("hello world");
     eosio_assert(itr2->stakeamount == quantity, "incorrect eos amount sent");
 
     bool seatavailable = itr2->maxatt > itr2->att;
     eosio_assert(seatavailable, "no more seats available");
 
-    ticketdb.modify(itr, _self, [&](auto &row) {
+    ticketdb.modify(itr, same_payer, [&](auto &row) {
         row.paid = true;
     });
 
-    eventdb.modify(itr2, _self, [&](auto &row) {
+    eventdb.modify(itr2, same_payer, [&](auto &row) {
         row.att = itr2->att + 1;
     });
 }
@@ -115,7 +132,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(rockup, (init)(createevent)(testreset)(reqticket))
+            EOSIO_DISPATCH_HELPER(rockup, (init)(createevent)(rollcall)(testreset)(reqticket))
         }
     }
 }

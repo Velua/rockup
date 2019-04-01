@@ -1,4 +1,4 @@
-const { sendTransaction, getTable } = require(`../utils`);
+const { sendTransaction, getTable, getBalance } = require(`../utils`);
 
 const { CONTRACT_ACCOUNT } = process.env;
 
@@ -192,5 +192,73 @@ describe(`contract`, () => {
         `assertion failure with message: ticket already paid for`
       );
     }
+  });
+
+  test(`test 3 can prepare a ticket`, async () => {
+    await sendTransaction({
+      name: `reqticket`,
+      actor: `test3`,
+      data: {
+        attendee: `test3`,
+        eventid: `eos21`,
+        ticketid: "party"
+      }
+    });
+  });
+
+  test(`test 3 can pay for his ticket sending correct amount`, async () => {
+    await sendTransaction({
+      account: "eosio.token",
+      name: "transfer",
+      actor: "test3",
+      data: {
+        from: "test3",
+        to: "rockup",
+        quantity: "5.0000 EOS",
+        memo: "party"
+      }
+    });
+  });
+
+  test(`test1 can roll call, sending back test2's stake`, async () => {
+    const beforeBalance = await getBalance("test2");
+    await sendTransaction({
+      name: "rollcall",
+      actor: "test1",
+      data: {
+        ticketid: "ap41",
+        attended: true
+      }
+    });
+
+    const afterBalance = await getBalance("test2");
+    expect(afterBalance).toBeGreaterThan(beforeBalance);
+    expect(afterBalance - 5).toBe(beforeBalance);
+  });
+
+  test(`test1 can roll call, test3 failed to show up`, async () => {
+    const test1BeforeBalance = await getBalance("test1");
+    const test3BeforeBalance = await getBalance("test3");
+
+    await sendTransaction({
+      name: "rollcall",
+      actor: "test1",
+      data: {
+        ticketid: "party",
+        attended: false
+      }
+    });
+
+    const test1AfterBalance = await getBalance("test1");
+    const test3AfterBalance = await getBalance("test3");
+    expect(test1AfterBalance).toBeGreaterThan(test1BeforeBalance);
+    expect(test1AfterBalance - 5).toBe(test1BeforeBalance);
+
+    expect(test3BeforeBalance).toBe(test3AfterBalance);
+  });
+
+  test(`test2 and test3s ticket no longer exists in RAM`, async () => {
+    const tableResult = await getTable("tickets");
+    expect(tableResult.rows).toHaveLength(0);
   });
 });

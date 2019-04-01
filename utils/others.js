@@ -36,6 +36,25 @@ const getTable = async (tableName, scope = CONTRACT_ACCOUNT) => {
   });
 };
 
+const getBalance = async (
+  accountName,
+  symbol = "EOS",
+  tokenContract = "eosio.token"
+) => {
+  const result = await api.rpc.get_currency_balance(
+    tokenContract,
+    accountName,
+    symbol
+  );
+
+  if (result.length === 1) {
+    const amount = result[0].split(" ")[0];
+    return Number(amount);
+  } else {
+    return result;
+  }
+};
+
 const sendTransaction = async args => {
   const actions = Array.isArray(args)
     ? args.map(createAction)
@@ -75,5 +94,6 @@ module.exports = {
   sendTransaction,
   getErrorDetail,
   getDeployableFilesFromDir,
-  getTable
+  getTable,
+  getBalance
 };
