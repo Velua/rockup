@@ -1,0 +1,3 @@
+/home/john/code/rockup/build/CMakeFiles/edit_cache.dir
+/home/john/code/rockup/build/CMakeFiles/rockup.wasm.dir
+/home/john/code/rockup/build/CMakeFiles/rebuild_cache.dir

@@ -1,0 +1,22 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/john/code/rockup/contract/./rockup.hpp
+string
+-
+eosiolib/eosio.hpp
+-
+eosiolib/asset.hpp
+-
+eosiolib/name.hpp
+-
+
+/home/john/code/rockup/contract/rockup.cpp
+./rockup.hpp
+/home/john/code/rockup/contract/./rockup.hpp
+
