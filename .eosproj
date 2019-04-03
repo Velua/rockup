@@ -1,0 +1,19 @@
+{
+  "main": "contract/rockup.cpp",
+  "contract": "rockup",
+  "include": "",
+  "cdt": "",
+  "output": "",
+  "scripts": {
+    "build": ""
+  },
+  "deploy": {
+    "mainnet": "",
+    "kylin": "",
+    "jungle": "",
+    "local": ""
+  },
+  "test": {
+    "npmClient": ""
+  }
+}

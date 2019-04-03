@@ -55,6 +55,8 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
         row.attendee = attendee;
         row.paid = false;
     });
+    
+    
 }
 
 void rockup::rollcall(name ticketid, bool attended)
@@ -63,7 +65,12 @@ void rockup::rollcall(name ticketid, bool attended)
     ticket_index ticketsdb(_code, _code.value);
     auto itr = ticketsdb.find(ticketid.value);
     eosio_assert(itr != ticketsdb.end(), "ticket does not exist");
-    eosio_assert(itr->paid, "cannot role call on a unpaid ticket");
+    
+    if (itr->paid == false) {
+      ticketsdb.erase(itr);
+      return;
+    }
+    // eosio_assert(itr->paid, "cannot role call on a unpaid ticket");
 
     event_index eventsdb(_code, _code.value);
     auto itr2 = eventsdb.find(itr->eventid.value);
