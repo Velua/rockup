@@ -1,33 +1,28 @@
-const { sendTransaction, getErrorDetail } = require(`../utils`);
+const { sendTransaction, getErrorDetail } = require(`../utils`)
 
-const { CONTRACT_ACCOUNT } = process.env;
+const { CONTRACT_ACCOUNT } = process.env
 
 async function action() {
-  try {
-    const transaction = await sendTransaction({
-      name: `createevent`,
-      actor: `test1`,
-      data: {
-        owner: `test1`,
-        eventid: `eos21`,
-        stakeamt: 5,
-        maxatt: 10
-      }
-    });
-    console.log(`SUCCESS`);
-    console.log(
-      transaction.processed.action_traces
-        .map(
-          trace =>
-            `${trace.console}${trace.inline_traces.map(
-              t => `\n\t${t.console}`
-            )}`
+    try {
+        const transaction = await sendTransaction({
+            name: `createevent`,
+            actor: CONTRACT_ACCOUNT,
+            data: {
+    "owner": "owner",
+    "eventid": "eventid",
+    "stakeamt": "stakeamt",
+    "maxatt": 739
+},
+        })
+        console.log(`SUCCESS`)
+        console.log(
+            transaction.processed.action_traces
+                .map(trace => `${trace.console}${trace.inline_traces.map(t => `\n\t${t.console}`)}`)
+                .join(`\n`),
         )
-        .join(`\n`)
-    );
-  } catch (error) {
-    console.error(`${getErrorDetail(error)}`);
-  }
+    } catch (error) {
+        console.error(`${getErrorDetail(error)}`)
+    }
 }
 
-action();
+action()

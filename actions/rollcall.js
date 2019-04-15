@@ -8,10 +8,9 @@ async function action() {
             name: `rollcall`,
             actor: CONTRACT_ACCOUNT,
             data: {
-                ticketid: `ticketid`,
-                eventowner: `eventowner`,
-                attended: `attended`,
-            },
+    "ticketid": "ticketid",
+    "attended": "attended"
+},
         })
         console.log(`SUCCESS`)
         console.log(

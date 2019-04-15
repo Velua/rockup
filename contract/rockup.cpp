@@ -15,6 +15,10 @@ void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxa
     auto itr = eventsdb.find(eventid.value);
     eosio_assert(itr == eventsdb.end(), "event already exists");
 
+    eosio_assert(stakeamt.symbol.is_valid(), "invalid quantity");
+    eosio_assert(stakeamt.amount > 0, "only positive quantity allowed");
+    eosio_assert(stakeamt.symbol == EOS_SYMBOL, "only EOS tokens allowed");
+
     eventsdb.emplace(owner, [&](auto &row) {
         row.eventid = eventid;
         row.stakeamount = stakeamt;
@@ -95,8 +99,8 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
 
     name ticketid = name{memo};
 
-    ticket_index ticketdb("rockup"_n, "rockup"_n.value);
-    event_index eventdb("rockup"_n, "rockup"_n.value);
+    ticket_index ticketdb("rockup.xyz"_n, "rockup.xyz"_n.value);
+    event_index eventdb("rockup.xyz"_n, "rockup.xyz"_n.value);
 
     auto itr = ticketdb.find(ticketid.value);
     eosio_assert(itr != ticketdb.end(), "ticket does not exist");

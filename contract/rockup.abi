@@ -1,7 +1,17 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr  1 09:34:10 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Apr 11 16:26:21 2019",
     "version": "eosio::abi/1.1",
     "structs": [
+        {
+            "name": "closeevent",
+            "base": "",
+            "fields": [
+                {
+                    "name": "eventid",
+                    "type": "name"
+                }
+            ]
+        },
         {
             "name": "createevent",
             "base": "",
@@ -16,7 +26,7 @@
                 },
                 {
                     "name": "stakeamt",
-                    "type": "uint64"
+                    "type": "asset"
                 },
                 {
                     "name": "maxatt",
@@ -34,15 +44,23 @@
                 },
                 {
                     "name": "stakeamount",
-                    "type": "uint64"
+                    "type": "asset"
                 },
                 {
                     "name": "maxatt",
                     "type": "uint64"
                 },
                 {
+                    "name": "att",
+                    "type": "uint64"
+                },
+                {
                     "name": "eventowner",
                     "type": "name"
+                },
+                {
+                    "name": "open",
+                    "type": "bool"
                 }
             ]
         },
@@ -57,15 +75,29 @@
             ]
         },
         {
+            "name": "reqticket",
+            "base": "",
+            "fields": [
+                {
+                    "name": "attendee",
+                    "type": "name"
+                },
+                {
+                    "name": "eventid",
+                    "type": "name"
+                },
+                {
+                    "name": "ticketid",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "rollcall",
             "base": "",
             "fields": [
                 {
                     "name": "ticketid",
-                    "type": "name"
-                },
-                {
-                    "name": "eventowner",
                     "type": "name"
                 },
                 {
@@ -94,12 +126,21 @@
                 {
                     "name": "eventid",
                     "type": "name"
+                },
+                {
+                    "name": "paid",
+                    "type": "bool"
                 }
             ]
         }
     ],
     "types": [],
     "actions": [
+        {
+            "name": "closeevent",
+            "type": "closeevent",
+            "ricardian_contract": ""
+        },
         {
             "name": "createevent",
             "type": "createevent",
@@ -108,6 +149,11 @@
         {
             "name": "init",
             "type": "init",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "reqticket",
+            "type": "reqticket",
             "ricardian_contract": ""
         },
         {

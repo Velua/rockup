@@ -59,9 +59,9 @@ async function script() {
             path.join(actionsDir, `transfer.js`),
         )
 
-        childProcess.execSync(`eslint --fix --quiet ${actionsDir}`, {
-            stdio: `inherit`,
-        })
+        // childProcess.execSync(`eslint --fix --quiet ${actionsDir}`, {
+        //     stdio: `inherit`,
+        // })
 
         console.log(`SUCCESS`)
     } catch (ex) {

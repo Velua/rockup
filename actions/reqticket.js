@@ -5,11 +5,13 @@ const { CONTRACT_ACCOUNT } = process.env
 async function action() {
     try {
         const transaction = await sendTransaction({
-            name: `init`,
-            actor: CONTRACT_ACCOUNT,
+            name: `reqticket`,
+            actor: 'test1',
             data: {
-    "name": "name"
-},
+                "attendee": "test1",
+                "eventid": "high",
+                "ticketid": "www"
+            },
         })
         console.log(`SUCCESS`)
         console.log(
