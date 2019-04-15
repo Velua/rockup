@@ -272,6 +272,34 @@ describe(`contract`, () => {
     })
   })
 
+  test(`test3 cannot wipe test4's second ticket`, async() => {
+  
+    expect.assertions(2)
+
+    try {
+      await sendTransaction({
+        name: 'wipeticket',
+        actor: 'test3',
+        data: {
+          ticketid: 'party3'
+        }
+      })
+    } catch(e) {
+      expect(e.message).toBe(`assertion failure with message: only attendee or event owner can wipe closed`)
+    }
+    
+
+    const afterTickets = await getTable('tickets')
+
+    expect(afterTickets.rows).toContainEqual({
+      ticketid: 'party3',
+      attendee: 'test4',
+      eventid: 'eos21',
+      paid: 0
+    })
+
+  })
+
   test(`test3 can't wipe the ticket he paid for`, async () => {
     expect.assertions(1)
     try {
