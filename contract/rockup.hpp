@@ -18,8 +18,8 @@ public:
     EOSLIB_SERIALIZE(init, (name))
   };
 
-  ACTION init(eosio::name name);
-  ACTION testreset();
+  // ACTION init(eosio::name name);
+  // ACTION testreset();
   ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, bool attended);

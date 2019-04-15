@@ -3,10 +3,10 @@
 using namespace eosio;
 using namespace std;
 
-void rockup::init(name name)
-{
-    require_auth(_self);
-}
+// void rockup::init(name name)
+// {
+//     require_auth(_self);
+// }
 
 void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxatt)
 {
@@ -157,24 +157,24 @@ void rockup::wipeevent(name eventid)
     eventsdb.erase(itr);
 }
 
-void rockup::testreset()
-{
-    require_auth(_self);
-    event_index eventsdb(_code, _code.value);
-    ticket_index ticketdb(_code, _code.value);
+// void rockup::testreset()
+// {
+//     require_auth(_self);
+//     event_index eventsdb(_code, _code.value);
+//     ticket_index ticketdb(_code, _code.value);
 
-    auto itr = eventsdb.begin();
-    while (itr != eventsdb.end())
-    {
-        itr = eventsdb.erase(itr);
-    }
+//     auto itr = eventsdb.begin();
+//     while (itr != eventsdb.end())
+//     {
+//         itr = eventsdb.erase(itr);
+//     }
 
-    auto itr2 = ticketdb.begin();
-    while (itr2 != ticketdb.end())
-    {
-        itr2 = ticketdb.erase(itr2);
-    }
-}
+//     auto itr2 = ticketdb.begin();
+//     while (itr2 != ticketdb.end())
+//     {
+//         itr2 = ticketdb.erase(itr2);
+//     }
+// }
 
 extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
 {

@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Thu Apr 11 16:26:21 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr 15 17:36:37 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -65,16 +65,6 @@
             ]
         },
         {
-            "name": "init",
-            "base": "",
-            "fields": [
-                {
-                    "name": "name",
-                    "type": "name"
-                }
-            ]
-        },
-        {
             "name": "reqticket",
             "base": "",
             "fields": [
@@ -107,11 +97,6 @@
             ]
         },
         {
-            "name": "testreset",
-            "base": "",
-            "fields": []
-        },
-        {
             "name": "ticket",
             "base": "",
             "fields": [
@@ -132,6 +117,26 @@
                     "type": "bool"
                 }
             ]
+        },
+        {
+            "name": "wipeevent",
+            "base": "",
+            "fields": [
+                {
+                    "name": "eventid",
+                    "type": "name"
+                }
+            ]
+        },
+        {
+            "name": "wipeticket",
+            "base": "",
+            "fields": [
+                {
+                    "name": "ticketid",
+                    "type": "name"
+                }
+            ]
         }
     ],
     "types": [],
@@ -147,11 +152,6 @@
             "ricardian_contract": ""
         },
         {
-            "name": "init",
-            "type": "init",
-            "ricardian_contract": ""
-        },
-        {
             "name": "reqticket",
             "type": "reqticket",
             "ricardian_contract": ""
@@ -162,8 +162,13 @@
             "ricardian_contract": ""
         },
         {
-            "name": "testreset",
-            "type": "testreset",
+            "name": "wipeevent",
+            "type": "wipeevent",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "wipeticket",
+            "type": "wipeticket",
             "ricardian_contract": ""
         }
     ],
