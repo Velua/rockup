@@ -222,6 +222,99 @@ describe(`contract`, () => {
     });
   });
 
+  test(`test3 can get himself another ticket`, async () => {
+    await sendTransaction({
+      name: `reqticket`,
+      actor: `test3`,
+      data: {
+        attendee: `test3`,
+        eventid: `eos21`,
+        ticketid: "party2"
+      }
+    });
+
+    const afterTickets = await getTable('tickets')
+
+    expect(afterTickets.rows).toContainEqual({
+      ticketid: 'party2',
+      attendee: 'test3',
+      eventid: 'eos21',
+      paid: 0
+    })
+  })
+
+  test(`test4 can get himself another ticket too`, async () => {
+    const beforeTickets = await getTable('tickets')
+    expect(beforeTickets.rows).not.toContainEqual({
+      ticketid: 'party3',
+      attendee: 'test4',
+      eventid: 'eos21',
+      paid: 0
+    })
+
+    await sendTransaction({
+      name: `reqticket`,
+      actor: `test4`,
+      data: {
+        attendee: `test4`,
+        eventid: `eos21`,
+        ticketid: "party3"
+      }
+    });
+
+    const afterTickets = await getTable('tickets')
+
+    expect(afterTickets.rows).toContainEqual({
+      ticketid: 'party3',
+      attendee: 'test4',
+      eventid: 'eos21',
+      paid: 0
+    })
+  })
+
+  test(`test3 can't wipe the ticket he paid for`, async () => {
+    expect.assertions(1)
+    try {
+      await sendTransaction({
+        name: 'wipeticket',
+        actor: 'test2',
+        data: {
+          ticketid: 'party'
+        }
+      })
+    } catch (e) {
+      expect(e.message).toBe(`assertion failure with message: cannot wipe a paid ticket`)
+    }
+  })
+
+  test(`test3 can wipe the ticket he didnt pay for`, async () => {
+    const tickets = await getTable('tickets')
+    expect(tickets.rows).toContainEqual({
+      ticketid: 'party2',
+      attendee: 'test3',
+      eventid: 'eos21',
+      paid: 0
+    })
+
+
+    await sendTransaction({
+      name: 'wipeticket',
+      actor: 'test3',
+      data: {
+        ticketid: 'party2'
+      }
+    })
+
+    const newTickets = await getTable('tickets')
+    expect(newTickets.rows).not.toContainEqual({
+      ticketid: 'party2',
+      attendee: 'test3',
+      eventid: 'eos21',
+      paid: 0
+    })
+
+  })
+
   test(`test2 cannot close the event`, async () => {
     expect.assertions(1);
     try {
@@ -265,6 +358,24 @@ describe(`contract`, () => {
     });
   });
 
+  test(`test1 can wipe the ticket test3 didnt pay for`, async () => {
+    await sendTransaction({
+      name: 'wipeticket',
+      actor: 'test1',
+      data: {
+        ticketid: 'party3'
+      }
+    })
+    const afterTickets = await getTable('tickets')
+
+    expect(afterTickets.rows).not.toContainEqual({
+      ticketid: 'party3',
+      attendee: 'test3',
+      eventid: 'eos21',
+      paid: 0
+    })
+  })
+
   test(`test1 can roll call, sending back test2's stake`, async () => {
     const beforeBalance = await getBalance("test2");
     await sendTransaction({
@@ -304,6 +415,19 @@ describe(`contract`, () => {
 
   test(`test2 and test3s ticket no longer exists in RAM`, async () => {
     const tableResult = await getTable("tickets");
-    expect(tableResult.rows).toHaveLength(0);
+    expect(tableResult.rows).not.toInclude({
+      attendee: `test3`,
+      eventid: `eos21`,
+      ticketid: "party",
+      paid: true
+    })
+
+    expect(tableResult.rows).not.toInclude({
+      attendee: `test2`,
+      eventid: `eos21`,
+      ticketid: "ap41",
+      paid: true
+    })
+
   });
 });

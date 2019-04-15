@@ -42,7 +42,8 @@ function getKeys() {
       [CONTRACT_ACCOUNT]: contractPrivate,
       test1: ecc.seedPrivate(`test1`),
       test2: ecc.seedPrivate(`test1`),
-      test3: ecc.seedPrivate("test1")
+      test3: ecc.seedPrivate("test1"),
+      test4: ecc.seedPrivate('test1')
     },
     privateKey => [privateKey, ecc.privateToPublic(privateKey)]
   );

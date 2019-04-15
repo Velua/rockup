@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr 15 13:01:36 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr 15 15:34:02 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -132,6 +132,16 @@
                     "type": "bool"
                 }
             ]
+        },
+        {
+            "name": "wipeticket",
+            "base": "",
+            "fields": [
+                {
+                    "name": "ticketid",
+                    "type": "name"
+                }
+            ]
         }
     ],
     "types": [],
@@ -164,6 +174,11 @@
         {
             "name": "testreset",
             "type": "testreset",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "wipeticket",
+            "type": "wipeticket",
             "ricardian_contract": ""
         }
     ],

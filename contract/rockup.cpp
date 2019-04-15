@@ -99,8 +99,8 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
 
     name ticketid = name{memo};
 
-    ticket_index ticketdb("rockup.xyz"_n, "rockup.xyz"_n.value);
-    event_index eventdb("rockup.xyz"_n, "rockup.xyz"_n.value);
+    ticket_index ticketdb("rockup"_n, "rockup"_n.value);
+    event_index eventdb("rockup"_n, "rockup"_n.value);
 
     auto itr = ticketdb.find(ticketid.value);
     eosio_assert(itr != ticketdb.end(), "ticket does not exist");
@@ -121,6 +121,22 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     eventdb.modify(itr2, same_payer, [&](auto &row) {
         row.att = itr2->att + 1;
     });
+}
+
+void rockup::wipeticket(name ticketid)
+{
+    ticket_index ticketsdb(_code, _code.value);
+    auto itr = ticketsdb.find(ticketid.value);
+    eosio_assert(itr != ticketsdb.end(), "ticket does not exist");
+    eosio_assert(!itr->paid, "cannot wipe a paid ticket");
+
+    event_index eventsdb(_code, _code.value);
+    auto itr2 = eventsdb.find(itr->eventid.value);
+    eosio_assert(itr2 != eventsdb.end(), "event does not exist");
+
+    eosio_assert(has_auth(itr->attendee) || (has_auth(itr2->eventowner) && !itr2->open), "only attendee or event owner can wipe closed ");
+
+    ticketsdb.erase(itr);
 }
 
 void rockup::testreset()
@@ -152,7 +168,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(rockup, (init)(createevent)(closeevent)(rollcall)(testreset)(reqticket))
+            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(testreset)(init))
         }
     }
 }
