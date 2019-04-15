@@ -6,10 +6,10 @@ async function action() {
     try {
         const transaction = await sendTransaction({
             name: `reqticket`,
-            actor: 'test1',
+            actor: 'test2',
             data: {
-                "attendee": "test1",
-                "eventid": "high",
+                "attendee": "test2",
+                "eventid": "ap41",
                 "ticketid": "www"
             },
         })

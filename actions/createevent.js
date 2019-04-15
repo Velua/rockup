@@ -6,12 +6,12 @@ async function action() {
     try {
         const transaction = await sendTransaction({
             name: `createevent`,
-            actor: CONTRACT_ACCOUNT,
+            actor: 'test1',
             data: {
-    "owner": "owner",
-    "eventid": "eventid",
-    "stakeamt": "stakeamt",
-    "maxatt": 739
+    "owner": "test1",
+    "eventid": "ap41",
+    "stakeamt": "5.0000 EOS",
+    "maxatt": 5
 },
         })
         console.log(`SUCCESS`)

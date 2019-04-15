@@ -2,6 +2,7 @@ const { sendTransaction, getTable, getBalance } = require(`../utils`);
 
 const { CONTRACT_ACCOUNT } = process.env;
 
+
 describe(`contract`, () => {
   beforeAll(async () => {
     await sendTransaction({ name: `testreset` });
@@ -32,6 +33,44 @@ describe(`contract`, () => {
       }
     ]);
   });
+
+  test(`test1 cannot wipe the event`, async() => {
+    expect.assertions(3)
+
+    const events = await getTable('events')
+    expect(events.rows).toContainEqual({
+      eventid: 'eos21',
+      stakeamount: '5.0000 EOS',
+      maxatt: 10,
+      att: 0,
+      eventowner: 'test1',
+      open: 1
+    })
+
+    try {
+      await sendTransaction({
+        name: 'wipeevent',
+        actor: 'test4',
+        data: {
+          eventid: 'eos21'
+        }
+      })
+    } catch(e) {
+      expect(e.message).toBe("assertion failure with message: event must be closed")
+    }
+
+    const afterEvents = await getTable('events')
+    expect(afterEvents.rows).toContainEqual({
+      eventid: 'eos21',
+      stakeamount: '5.0000 EOS',
+      maxatt: 10,
+      att: 0,
+      eventowner: 'test1',
+      open: 1
+    })
+
+
+  })
 
   test(`test1 cannot create a new event with an existing id`, async () => {
     expect.assertions(2);
@@ -272,8 +311,8 @@ describe(`contract`, () => {
     })
   })
 
-  test(`test3 cannot wipe test4's second ticket`, async() => {
-  
+  test(`test3 cannot wipe test4's second ticket`, async () => {
+
     expect.assertions(2)
 
     try {
@@ -284,10 +323,10 @@ describe(`contract`, () => {
           ticketid: 'party3'
         }
       })
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe(`assertion failure with message: only attendee or event owner can wipe closed`)
     }
-    
+
 
     const afterTickets = await getTable('tickets')
 
@@ -404,6 +443,44 @@ describe(`contract`, () => {
     })
   })
 
+  test(`no one can wipe an event with tickets`, async () => {
+
+    expect.assertions(3)
+
+    const events = await getTable('events')
+    expect(events.rows).toContainEqual({
+      eventid: 'eos21',
+      stakeamount: '5.0000 EOS',
+      maxatt: 10,
+      att: 2,
+      eventowner: 'test1',
+      open: 0
+    })
+
+    try {
+      await sendTransaction({
+        name: 'wipeevent',
+        actor: 'test4',
+        data: {
+          eventid: 'eos21'
+        }
+      })
+    } catch(e) {
+      expect(e.message).toBe("assertion failure with message: ticket still exists")
+    }
+
+    const newEvents = await getTable('events')
+    expect(newEvents.rows).toContainEqual({
+      eventid: 'eos21',
+      stakeamount: '5.0000 EOS',
+      maxatt: 10,
+      att: 2,
+      eventowner: 'test1',
+      open: 0
+    })
+
+  })
+
   test(`test1 can roll call, sending back test2's stake`, async () => {
     const beforeBalance = await getBalance("test2");
     await sendTransaction({
@@ -458,4 +535,36 @@ describe(`contract`, () => {
     })
 
   });
+
+  test(`anyone can wipe a closed event with no tickets`, async () => {
+
+    const events = await getTable('events')
+    expect(events.rows).toContainEqual({
+      eventid: 'eos21',
+      stakeamount: '5.0000 EOS',
+      maxatt: 10,
+      att: 2,
+      eventowner: 'test1',
+      open: 0
+    })
+
+    await sendTransaction({
+      name: 'wipeevent',
+      actor: 'test4',
+      data: {
+        eventid: 'eos21'
+      }
+    })
+
+    const newEvents = await getTable('events')
+    expect(newEvents.rows).not.toContainEqual({
+      eventid: 'eos21',
+      stakeamount: '5.0000 EOS',
+      maxatt: 10,
+      att: 2,
+      eventowner: 'test1',
+      open: 0
+    })
+
+  })
 });

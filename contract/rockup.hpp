@@ -24,6 +24,7 @@ public:
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, bool attended);
   ACTION wipeticket(eosio::name ticketid);
+  ACTION wipeevent(eosio::name eventid);
   ACTION closeevent(eosio::name eventid);
   void transfer(eosio::name from, eosio::name to, eosio::asset quantity, std::string memo);
 
@@ -49,6 +50,7 @@ private:
     bool paid;
 
     uint64_t primary_key() const { return ticketid.value; }
+    uint64_t get_secondary_1() const { return eventid.value;}
   };
-  typedef eosio::multi_index<"tickets"_n, ticket> ticket_index;
-};
+  typedef eosio::multi_index<"tickets"_n, ticket, eosio::indexed_by<"byevent"_n, eosio::const_mem_fun<ticket, uint64_t, &ticket::get_secondary_1>>> ticket_index;
+};                                                

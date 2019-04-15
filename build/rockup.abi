@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr 15 15:44:06 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr 15 17:13:33 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -134,6 +134,16 @@
             ]
         },
         {
+            "name": "wipeevent",
+            "base": "",
+            "fields": [
+                {
+                    "name": "eventid",
+                    "type": "name"
+                }
+            ]
+        },
+        {
             "name": "wipeticket",
             "base": "",
             "fields": [
@@ -174,6 +184,11 @@
         {
             "name": "testreset",
             "type": "testreset",
+            "ricardian_contract": ""
+        },
+        {
+            "name": "wipeevent",
+            "type": "wipeevent",
             "ricardian_contract": ""
         },
         {
