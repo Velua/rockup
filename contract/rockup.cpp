@@ -134,7 +134,7 @@ void rockup::wipeticket(name ticketid)
     auto itr2 = eventsdb.find(itr->eventid.value);
     eosio_assert(itr2 != eventsdb.end(), "event does not exist");
 
-    eosio_assert(has_auth(itr->attendee) || (has_auth(itr2->eventowner) && !itr2->open), "only attendee or event owner can wipe closed ");
+    eosio_assert(has_auth(itr->attendee) || !itr2->open, "only attendee or event owner can wipe closed ");
 
     ticketsdb.erase(itr);
 }
