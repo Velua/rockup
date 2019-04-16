@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon Apr 15 17:36:37 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Tue Apr 16 11:40:21 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -119,7 +119,7 @@
             ]
         },
         {
-            "name": "wipeevent",
+            "name": "we",
             "base": "",
             "fields": [
                 {
@@ -162,8 +162,8 @@
             "ricardian_contract": ""
         },
         {
-            "name": "wipeevent",
-            "type": "wipeevent",
+            "name": "we",
+            "type": "we",
             "ricardian_contract": ""
         },
         {

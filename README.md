@@ -52,7 +52,7 @@ There's a `npm run init` script that _sets up your contract account_ and test ac
 To deploy to the network specified in `.<environment>.env`, run:
 
 ```
-NODE_ENV=testnet npm run deploy
+NODE_ENV=production npm run deploy
 ```
 
 

@@ -139,7 +139,7 @@ void rockup::wipeticket(name ticketid)
     ticketsdb.erase(itr);
 }
 
-void rockup::wipeevent(name eventid)
+void rockup::we(name eventid)
 {
 
     event_index eventsdb(_code, _code.value);
@@ -186,7 +186,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(wipeevent))
+            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(we))
         }
     }
 }
