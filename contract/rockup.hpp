@@ -19,7 +19,7 @@ public:
   };
 
   // ACTION init(eosio::name name);
-  // ACTION testreset();
+  ACTION testreset();
   ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, bool attended);

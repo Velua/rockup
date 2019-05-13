@@ -49,7 +49,7 @@ describe(`contract`, () => {
 
     try {
       await sendTransaction({
-        name: 'wipeevent',
+        name: 'we',
         actor: 'test4',
         data: {
           eventid: 'eos21'
@@ -459,7 +459,7 @@ describe(`contract`, () => {
 
     try {
       await sendTransaction({
-        name: 'wipeevent',
+        name: 'we',
         actor: 'test4',
         data: {
           eventid: 'eos21'
@@ -549,7 +549,7 @@ describe(`contract`, () => {
     })
 
     await sendTransaction({
-      name: 'wipeevent',
+      name: 'we',
       actor: 'test4',
       data: {
         eventid: 'eos21'
