@@ -13,10 +13,10 @@ CONTRACT rockup : public eosio::contract
 public:
 
 
-  // ACTION testreset(eosio::name eventid);
+  ACTION testreset(eosio::name eventid);
   // Todo
   // Invite only option
-  ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt);
+  ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt, bool inviteonly);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, eosio::name eventid, bool attended);
   ACTION wipeticket(eosio::name ticketid, eosio::name eventid);
@@ -33,6 +33,7 @@ private:
     uint64_t att;
     eosio::name eventowner;
     bool open;
+    bool inviteonly;
 
     uint64_t primary_key() const { return eventid.value; }
   };

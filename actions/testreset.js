@@ -1,4 +1,4 @@
-const { sendTransaction, getErrorDetail } = require(`../utils`)
+const { sendTransaction, getErrorDetail, getTable } = require(`../utils`)
 
 const { CONTRACT_ACCOUNT } = process.env
 
@@ -7,8 +7,13 @@ async function action() {
         const transaction = await sendTransaction({
             name: `testreset`,
             actor: CONTRACT_ACCOUNT,
-            data: {},
+            data: { eventid: 'eos21' },
         })
+
+        const tickets = await getTable('tickets', 'eos21')
+        if (tickets.rows.length > 0) throw "Tickets werent removed";
+        const events = await getTable('events')
+        if (events.rows.length > 0) throw "Event/s still exists"
         console.log(`SUCCESS`)
         console.log(
             transaction.processed.action_traces

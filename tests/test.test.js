@@ -16,7 +16,8 @@ describe(`contract`, () => {
         owner: `test1`,
         eventid: `eos21`,
         stakeamt: "5.0000 EOS",
-        maxatt: 10
+        maxatt: 10,
+        inviteonly: false
       }
     });
 
@@ -29,7 +30,8 @@ describe(`contract`, () => {
         maxatt: 10,
         eventowner: "test1",
         att: 0,
-        open: 1
+        open: 1,
+        inviteonly: 0
       }
     ]);
   });
@@ -44,7 +46,8 @@ describe(`contract`, () => {
       maxatt: 10,
       att: 0,
       eventowner: 'test1',
-      open: 1
+      open: 1,
+      inviteonly: 0
     })
 
     try {
@@ -66,7 +69,8 @@ describe(`contract`, () => {
       maxatt: 10,
       att: 0,
       eventowner: 'test1',
-      open: 1
+      open: 1,
+      inviteonly: 0
     })
 
 
@@ -82,7 +86,8 @@ describe(`contract`, () => {
           owner: `test1`,
           eventid: `eos21`,
           stakeamt: "5.0000 EOS",
-          maxatt: 12
+          maxatt: 12,
+          inviteonly: false
         }
       });
     } catch (e) {
@@ -97,7 +102,9 @@ describe(`contract`, () => {
           maxatt: 10,
           eventowner: "test1",
           att: 0,
-          open: 1
+          open: 1,
+          inviteonly: 0
+
         }
       ]);
     }
@@ -278,7 +285,7 @@ describe(`contract`, () => {
       ticketid: 'party2',
       attendee: 'test3',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
     })
   })
 
@@ -288,7 +295,8 @@ describe(`contract`, () => {
       ticketid: 'party3',
       attendee: 'test4',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
+
     })
 
     await sendTransaction({
@@ -307,7 +315,8 @@ describe(`contract`, () => {
       ticketid: 'party3',
       attendee: 'test4',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
+
     })
   })
 
@@ -335,7 +344,8 @@ describe(`contract`, () => {
       ticketid: 'party3',
       attendee: 'test4',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
+
     })
 
   })
@@ -362,7 +372,8 @@ describe(`contract`, () => {
       ticketid: 'party2',
       attendee: 'test3',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
+
     })
 
 
@@ -380,7 +391,9 @@ describe(`contract`, () => {
       ticketid: 'party2',
       attendee: 'test3',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
+      inviteonly: 0
+
     })
 
   })
@@ -444,7 +457,9 @@ describe(`contract`, () => {
       ticketid: 'party3',
       attendee: 'test3',
       eventid: 'eos21',
-      paid: 0
+      paid: 0,
+      inviteonly: 0
+
     })
   })
 
@@ -459,7 +474,9 @@ describe(`contract`, () => {
       maxatt: 10,
       att: 2,
       eventowner: 'test1',
-      open: 0
+      open: 0,
+      inviteonly: 0
+
     })
 
     try {
@@ -481,7 +498,9 @@ describe(`contract`, () => {
       maxatt: 10,
       att: 2,
       eventowner: 'test1',
-      open: 0
+      open: 0,
+      inviteonly: 0
+
     })
 
   })
@@ -552,7 +571,9 @@ describe(`contract`, () => {
       maxatt: 10,
       att: 2,
       eventowner: 'test1',
-      open: 0
+      open: 0,
+      inviteonly: 0
+
     })
 
     await sendTransaction({
@@ -570,7 +591,9 @@ describe(`contract`, () => {
       maxatt: 10,
       att: 2,
       eventowner: 'test1',
-      open: 0
+      open: 0,
+      inviteonly: 0
+
     })
 
   })
