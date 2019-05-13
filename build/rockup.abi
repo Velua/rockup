@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon May 13 12:04:11 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon May 13 12:45:15 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -91,6 +91,10 @@
                     "type": "name"
                 },
                 {
+                    "name": "eventid",
+                    "type": "name"
+                },
+                {
                     "name": "attended",
                     "type": "bool"
                 }
@@ -99,7 +103,12 @@
         {
             "name": "testreset",
             "base": "",
-            "fields": []
+            "fields": [
+                {
+                    "name": "eventid",
+                    "type": "name"
+                }
+            ]
         },
         {
             "name": "ticket",
@@ -139,6 +148,10 @@
             "fields": [
                 {
                     "name": "ticketid",
+                    "type": "name"
+                },
+                {
+                    "name": "eventid",
                     "type": "name"
                 }
             ]

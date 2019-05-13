@@ -45,7 +45,7 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
     require_auth(attendee);
 
     event_index eventsdb(_code, _code.value);
-    ticket_index ticketdb(_code, _code.value);
+    ticket_index ticketdb(_code, eventid.value);
 
     auto itr = eventsdb.find(eventid.value);
     eosio_assert(itr != eventsdb.end(), "event does not exist");
@@ -61,16 +61,15 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
     });
 }
 
-void rockup::rollcall(name ticketid, bool attended)
+void rockup::rollcall(name ticketid, name eventid, bool attended)
 {
-
-    ticket_index ticketsdb(_code, _code.value);
+    ticket_index ticketsdb(_code, eventid.value);
     auto itr = ticketsdb.find(ticketid.value);
     eosio_assert(itr != ticketsdb.end(), "ticket does not exist");
     eosio_assert(itr->paid, "cannot role call on a unpaid ticket");
 
     event_index eventsdb(_code, _code.value);
-    auto itr2 = eventsdb.find(itr->eventid.value);
+    auto itr2 = eventsdb.find(eventid.value);
     eosio_assert(itr2 != eventsdb.end(), "event does not exist");
     eosio_assert(!itr2->open, "event must be closed for rollcall");
     require_auth(itr2->eventowner);
@@ -97,9 +96,15 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     eosio_assert(quantity.amount > 0, "only positive quantity allowed");
     eosio_assert(quantity.symbol == EOS_SYMBOL, "only EOS tokens allowed");
 
-    name ticketid = name{memo};
+    size_t pos = memo.find(":");
+    eosio_assert(pos != string::npos, "Invalid memo");
+    name ticketid = name{memo.substr(0, pos)};
+    name eventid = name{memo.substr(pos+1)};
+    print(ticketid);
+    print(eventid);
+    print("was the data");
 
-    ticket_index ticketdb("rockup"_n, "rockup"_n.value);
+    ticket_index ticketdb("rockup"_n, eventid.value);
     event_index eventdb("rockup"_n, "rockup"_n.value);
 
     auto itr = ticketdb.find(ticketid.value);
@@ -123,15 +128,15 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     });
 }
 
-void rockup::wipeticket(name ticketid)
+void rockup::wipeticket(name ticketid, name eventid)
 {
-    ticket_index ticketsdb(_code, _code.value);
+    ticket_index ticketsdb(_code, eventid.value);
     auto itr = ticketsdb.find(ticketid.value);
     eosio_assert(itr != ticketsdb.end(), "ticket does not exist");
     eosio_assert(!itr->paid, "cannot wipe a paid ticket");
 
     event_index eventsdb(_code, _code.value);
-    auto itr2 = eventsdb.find(itr->eventid.value);
+    auto itr2 = eventsdb.find(eventid.value);
     eosio_assert(itr2 != eventsdb.end(), "event does not exist");
 
     eosio_assert(has_auth(itr->attendee) || !itr2->open, "only attendee or event owner can wipe closed");
@@ -148,20 +153,18 @@ void rockup::we(name eventid)
     eosio_assert(!itr->open, "event must be closed");
 
 
-    ticket_index ticketsdb(_code, _code.value);
-    auto eventidindex = ticketsdb.get_index<name("byevent")>();
-    auto itr2 = eventidindex.lower_bound(eventid.value);
-
-    eosio_assert(itr2 == eventidindex.end(), "ticket still exists");
+    ticket_index ticketsdb(_code, eventid.value);
+    auto itr2 = ticketsdb.begin();
+    eosio_assert(itr2 == ticketsdb.end(), "ticket still exists");
 
     eventsdb.erase(itr);
 }
 
-void rockup::testreset()
+void rockup::testreset(name eventid)
 {
     require_auth(_self);
     event_index eventsdb(_code, _code.value);
-    ticket_index ticketdb(_code, _code.value);
+    ticket_index ticketdb(_code, eventid.value);
 
     auto itr = eventsdb.begin();
     while (itr != eventsdb.end())

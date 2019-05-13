@@ -19,11 +19,11 @@ public:
   };
 
   // ACTION init(eosio::name name);
-  ACTION testreset();
+  ACTION testreset(eosio::name eventid);
   ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
-  ACTION rollcall(eosio::name ticketid, bool attended);
-  ACTION wipeticket(eosio::name ticketid);
+  ACTION rollcall(eosio::name ticketid, eosio::name eventid, bool attended);
+  ACTION wipeticket(eosio::name ticketid, eosio::name eventid);
   ACTION we(eosio::name eventid);
   ACTION closeevent(eosio::name eventid);
   void transfer(eosio::name from, eosio::name to, eosio::asset quantity, std::string memo);
