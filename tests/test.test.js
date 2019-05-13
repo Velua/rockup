@@ -5,7 +5,7 @@ const { CONTRACT_ACCOUNT } = process.env;
 
 describe(`contract`, () => {
   beforeAll(async () => {
-    await sendTransaction({ name: `testreset` });
+    await sendTransaction({ name: `testreset`, data: { eventid: 'eos21' } });
   });
 
   test(`test1 can create an event`, async () => {
@@ -34,7 +34,7 @@ describe(`contract`, () => {
     ]);
   });
 
-  test(`test1 cannot wipe the event`, async() => {
+  test(`test1 cannot wipe the event`, async () => {
     expect.assertions(3)
 
     const events = await getTable('events')
@@ -55,7 +55,7 @@ describe(`contract`, () => {
           eventid: 'eos21'
         }
       })
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe("assertion failure with message: event must be closed")
     }
 
@@ -114,7 +114,7 @@ describe(`contract`, () => {
       }
     });
 
-    const tableResult = await getTable("tickets");
+    const tableResult = await getTable('tickets', 'eos21');
     expect(tableResult.rows).toEqual([
       { ticketid: "ap41", attendee: "test2", eventid: "eos21", paid: 0 }
     ]);
@@ -151,7 +151,7 @@ describe(`contract`, () => {
           from: "test2",
           to: "rockup",
           quantity: "4.9999 EOS",
-          memo: "ap41"
+          memo: "ap41:eos21"
         }
       });
     } catch (e) {
@@ -169,7 +169,7 @@ describe(`contract`, () => {
           from: "test2",
           to: "rockup",
           quantity: "6.0000 EOS",
-          memo: "ap41"
+          memo: "ap41:eos21"
         }
       });
     } catch (e) {
@@ -186,7 +186,7 @@ describe(`contract`, () => {
     expect(beforeEvent.att).toBe(0);
 
     // Confirm ticket has not been paid for yet
-    const ticketsTable = await getTable("tickets");
+    const ticketsTable = await getTable('tickets', 'eos21');
     const beforeTicket = ticketsTable.rows[0];
     expect(beforeTicket.paid).toBe(0);
 
@@ -198,12 +198,12 @@ describe(`contract`, () => {
         from: "test2",
         to: "rockup",
         quantity: "5.0000 EOS",
-        memo: "ap41"
+        memo: "ap41:eos21"
       }
     });
 
     // Confirm ticket has now been paid for
-    const tableResult = await getTable("tickets");
+    const tableResult = await getTable('tickets', 'eos21');
     expect(tableResult.rows).toEqual([
       { ticketid: "ap41", attendee: "test2", eventid: "eos21", paid: 1 }
     ]);
@@ -225,7 +225,7 @@ describe(`contract`, () => {
           from: "test2",
           to: "rockup",
           quantity: "5.0000 EOS",
-          memo: "ap41"
+          memo: "ap41:eos21"
         }
       });
     } catch (e) {
@@ -256,7 +256,7 @@ describe(`contract`, () => {
         from: "test3",
         to: "rockup",
         quantity: "5.0000 EOS",
-        memo: "party"
+        memo: "party:eos21"
       }
     });
   });
@@ -272,7 +272,7 @@ describe(`contract`, () => {
       }
     });
 
-    const afterTickets = await getTable('tickets')
+    const afterTickets = await getTable('tickets', 'eos21')
 
     expect(afterTickets.rows).toContainEqual({
       ticketid: 'party2',
@@ -283,7 +283,7 @@ describe(`contract`, () => {
   })
 
   test(`test4 can get himself another ticket too`, async () => {
-    const beforeTickets = await getTable('tickets')
+    const beforeTickets = await getTable('tickets', 'eos21')
     expect(beforeTickets.rows).not.toContainEqual({
       ticketid: 'party3',
       attendee: 'test4',
@@ -301,7 +301,7 @@ describe(`contract`, () => {
       }
     });
 
-    const afterTickets = await getTable('tickets')
+    const afterTickets = await getTable('tickets', 'eos21')
 
     expect(afterTickets.rows).toContainEqual({
       ticketid: 'party3',
@@ -320,7 +320,8 @@ describe(`contract`, () => {
         name: 'wipeticket',
         actor: 'test3',
         data: {
-          ticketid: 'party3'
+          ticketid: 'party3',
+          eventid: 'eos21'
         }
       })
     } catch (e) {
@@ -328,7 +329,7 @@ describe(`contract`, () => {
     }
 
 
-    const afterTickets = await getTable('tickets')
+    const afterTickets = await getTable('tickets', 'eos21')
 
     expect(afterTickets.rows).toContainEqual({
       ticketid: 'party3',
@@ -346,7 +347,8 @@ describe(`contract`, () => {
         name: 'wipeticket',
         actor: 'test2',
         data: {
-          ticketid: 'party'
+          ticketid: 'party',
+          eventid: 'eos21'
         }
       })
     } catch (e) {
@@ -355,7 +357,7 @@ describe(`contract`, () => {
   })
 
   test(`test3 can wipe the ticket he didnt pay for`, async () => {
-    const tickets = await getTable('tickets')
+    const tickets = await getTable('tickets', 'eos21')
     expect(tickets.rows).toContainEqual({
       ticketid: 'party2',
       attendee: 'test3',
@@ -368,11 +370,12 @@ describe(`contract`, () => {
       name: 'wipeticket',
       actor: 'test3',
       data: {
-        ticketid: 'party2'
+        ticketid: 'party2',
+        eventid: 'eos21'
       }
     })
 
-    const newTickets = await getTable('tickets')
+    const newTickets = await getTable('tickets', 'eos21')
     expect(newTickets.rows).not.toContainEqual({
       ticketid: 'party2',
       attendee: 'test3',
@@ -405,7 +408,8 @@ describe(`contract`, () => {
         actor: "test1",
         data: {
           ticketid: "ap41",
-          attended: true
+          attended: true,
+          eventid: 'eos21'
         }
       });
     } catch (e) {
@@ -430,10 +434,11 @@ describe(`contract`, () => {
       name: 'wipeticket',
       actor: 'test1',
       data: {
-        ticketid: 'party3'
+        ticketid: 'party3',
+        eventid: 'eos21'
       }
     })
-    const afterTickets = await getTable('tickets')
+    const afterTickets = await getTable('tickets', 'eos21')
 
     expect(afterTickets.rows).not.toContainEqual({
       ticketid: 'party3',
@@ -465,7 +470,7 @@ describe(`contract`, () => {
           eventid: 'eos21'
         }
       })
-    } catch(e) {
+    } catch (e) {
       expect(e.message).toBe("assertion failure with message: ticket still exists")
     }
 
@@ -488,6 +493,7 @@ describe(`contract`, () => {
       actor: "test1",
       data: {
         ticketid: "ap41",
+        eventid: 'eos21',
         attended: true
       }
     });
@@ -506,6 +512,7 @@ describe(`contract`, () => {
       actor: "test1",
       data: {
         ticketid: "party",
+        eventid: 'eos21',
         attended: false
       }
     });
@@ -519,7 +526,7 @@ describe(`contract`, () => {
   });
 
   test(`test2 and test3s ticket no longer exists in RAM`, async () => {
-    const tableResult = await getTable("tickets");
+    const tableResult = await getTable('tickets', 'eos21');
     expect(tableResult.rows).not.toInclude({
       attendee: `test3`,
       eventid: `eos21`,
