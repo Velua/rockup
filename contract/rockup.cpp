@@ -43,7 +43,8 @@ void rockup::closeevent(name eventid)
 
 void rockup::reqticket(name attendee, name eventid, name ticketid)
 {
-    require_auth(attendee);
+    // Do we need this?
+    // require_auth(attendee);
 
     event_index eventsdb(_code, _code.value);
     ticket_index ticketdb(_code, eventid.value);
@@ -51,10 +52,13 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
     auto itr = eventsdb.find(eventid.value);
     eosio_assert(itr != eventsdb.end(), "event does not exist");
     eosio_assert(itr->open, "cannot create ticket for closed event");
+    if(itr->inviteonly) {
+        eosio_assert(has_auth(itr->eventowner), "invite only event");
+    }
     auto itr2 = ticketdb.find(ticketid.value);
     eosio_assert(itr2 == ticketdb.end(), "ticket id already exists");
 
-    ticketdb.emplace(attendee, [&](auto &row) {
+    ticketdb.emplace(itr->inviteonly ? itr->eventowner : attendee, [&](auto &row) {
         row.ticketid = ticketid;
         row.eventid = eventid;
         row.attendee = attendee;

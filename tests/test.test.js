@@ -6,6 +6,7 @@ const { CONTRACT_ACCOUNT } = process.env;
 describe(`contract`, () => {
   beforeAll(async () => {
     await sendTransaction({ name: `testreset`, data: { eventid: 'eos21' } });
+    jest.setTimeout(10000)
   });
 
   test(`test1 can create an event`, async () => {
