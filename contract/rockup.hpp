@@ -11,15 +11,9 @@ CONTRACT rockup : public eosio::contract
   using contract::contract;
 
 public:
-  struct init
-  {
-    init(){};
-    eosio::name name;
-    EOSLIB_SERIALIZE(init, (name))
-  };
 
-  // ACTION init(eosio::name name);
-  ACTION testreset(eosio::name eventid);
+
+  // ACTION testreset(eosio::name eventid);
   ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, eosio::name eventid, bool attended);

@@ -104,8 +104,8 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     print(eventid);
     print("was the data");
 
-    ticket_index ticketdb("rockup"_n, eventid.value);
-    event_index eventdb("rockup"_n, "rockup"_n.value);
+    ticket_index ticketdb("rockup.xyz"_n, eventid.value);
+    event_index eventdb("rockup.xyz"_n, "rockup.xyz"_n.value);
 
     auto itr = ticketdb.find(ticketid.value);
     eosio_assert(itr != ticketdb.end(), "ticket does not exist");
@@ -160,24 +160,24 @@ void rockup::we(name eventid)
     eventsdb.erase(itr);
 }
 
-void rockup::testreset(name eventid)
-{
-    require_auth(_self);
-    event_index eventsdb(_code, _code.value);
-    ticket_index ticketdb(_code, eventid.value);
+// void rockup::testreset(name eventid)
+// {
+//     require_auth(_self);
+//     event_index eventsdb(_code, _code.value);
+//     ticket_index ticketdb(_code, eventid.value);
 
-    auto itr = eventsdb.begin();
-    while (itr != eventsdb.end())
-    {
-        itr = eventsdb.erase(itr);
-    }
+//     auto itr = eventsdb.begin();
+//     while (itr != eventsdb.end())
+//     {
+//         itr = eventsdb.erase(itr);
+//     }
 
-    auto itr2 = ticketdb.begin();
-    while (itr2 != ticketdb.end())
-    {
-        itr2 = ticketdb.erase(itr2);
-    }
-}
+//     auto itr2 = ticketdb.begin();
+//     while (itr2 != ticketdb.end())
+//     {
+//         itr2 = ticketdb.erase(itr2);
+//     }
+// }
 
 extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
 {
@@ -189,7 +189,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(we)(testreset))
+            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(we))
         }
     }
 }
