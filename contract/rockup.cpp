@@ -101,9 +101,7 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     eosio_assert(pos != string::npos, "Invalid memo");
     name ticketid = name{memo.substr(0, pos)};
     name eventid = name{memo.substr(pos+1)};
-    print(ticketid);
-    print(eventid);
-    print("was the data");
+
 
     ticket_index ticketdb("rockup"_n, eventid.value);
     event_index eventdb("rockup"_n, "rockup"_n.value);
