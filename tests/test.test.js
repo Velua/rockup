@@ -19,7 +19,8 @@ describe(`contract`, () => {
         stakeamt: "5.0000 EOS",
         maxatt: 10,
         inviteonly: false,
-        about: "whatever"
+        about: "whatever",
+        grace: 21600
       }
     });
 
@@ -33,7 +34,8 @@ describe(`contract`, () => {
         eventowner: "test1",
         att: 0,
         open: 1,
-        inviteonly: 0
+        inviteonly: 0,
+        grace: 21600
       }
     ]);
   });
@@ -49,7 +51,9 @@ describe(`contract`, () => {
       att: 0,
       eventowner: 'test1',
       open: 1,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
+      
     })
 
     try {
@@ -72,7 +76,8 @@ describe(`contract`, () => {
       att: 0,
       eventowner: 'test1',
       open: 1,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
     })
 
 
@@ -90,7 +95,8 @@ describe(`contract`, () => {
           stakeamt: "5.0000 EOS",
           maxatt: 12,
           inviteonly: false,
-          about: "whatever"
+          about: "whatever",
+          grace: 21600
         }
       });
     } catch (e) {
@@ -106,7 +112,8 @@ describe(`contract`, () => {
           eventowner: "test1",
           att: 0,
           open: 1,
-          inviteonly: 0
+          inviteonly: 0,
+          grace: 21600
 
         }
       ]);
@@ -395,7 +402,8 @@ describe(`contract`, () => {
       attendee: 'test3',
       eventid: 'eos21',
       paid: 0,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
 
     })
 
@@ -461,7 +469,8 @@ describe(`contract`, () => {
       attendee: 'test3',
       eventid: 'eos21',
       paid: 0,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
 
     })
   })
@@ -478,7 +487,8 @@ describe(`contract`, () => {
       att: 2,
       eventowner: 'test1',
       open: 0,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
 
     })
 
@@ -502,7 +512,8 @@ describe(`contract`, () => {
       att: 2,
       eventowner: 'test1',
       open: 0,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
 
     })
 
@@ -575,7 +586,8 @@ describe(`contract`, () => {
       att: 2,
       eventowner: 'test1',
       open: 0,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
 
     })
 
@@ -595,7 +607,8 @@ describe(`contract`, () => {
       att: 2,
       eventowner: 'test1',
       open: 0,
-      inviteonly: 0
+      inviteonly: 0,
+      grace: 21600
 
     })
 

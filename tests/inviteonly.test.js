@@ -19,7 +19,8 @@ describe(`contract`, () => {
           stakeamt: "5.0000 EOS",
           maxatt: 10,
           inviteonly: true,
-          about: "whatever"
+          about: "whatever",
+          grace: 21600
         }
       });
   
@@ -33,7 +34,8 @@ describe(`contract`, () => {
           eventowner: "test2",
           att: 0,
           open: 1,
-          inviteonly: 1
+          inviteonly: 1,
+          grace: 21600
         }
       ]);
   })
