@@ -18,7 +18,8 @@ describe(`contract`, () => {
         eventid: `eos21`,
         stakeamt: "5.0000 EOS",
         maxatt: 10,
-        inviteonly: false
+        inviteonly: false,
+        about: "whatever"
       }
     });
 
@@ -88,7 +89,8 @@ describe(`contract`, () => {
           eventid: `eos21`,
           stakeamt: "5.0000 EOS",
           maxatt: 12,
-          inviteonly: false
+          inviteonly: false,
+          about: "whatever"
         }
       });
     } catch (e) {

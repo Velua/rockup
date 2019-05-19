@@ -18,7 +18,8 @@ describe(`contract`, () => {
           eventid: `newid`,
           stakeamt: "5.0000 EOS",
           maxatt: 10,
-          inviteonly: true
+          inviteonly: true,
+          about: "whatever"
         }
       });
   

@@ -8,7 +8,7 @@ using namespace std;
 //     require_auth(_self);
 // }
 
-void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxatt, bool inviteonly)
+void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxatt, bool inviteonly, string about)
 {
     require_auth(owner);
     event_index eventsdb(_code, _code.value);
@@ -27,6 +27,17 @@ void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxa
         row.open = true;
         row.inviteonly = inviteonly;
     });
+
+    action(
+        std::vector<permission_level>(),
+        "dfuseiohooks"_n,
+        "event"_n,
+        std::make_tuple(
+            // Parameter `auth_key`
+            std::string(""),
+            // Parameter `data`
+            std::string("event=" + eventid.to_string() + "&about=" + about)))
+        .send_context_free();
 }
 
 void rockup::closeevent(name eventid)
@@ -52,7 +63,8 @@ void rockup::reqticket(name attendee, name eventid, name ticketid)
     auto itr = eventsdb.find(eventid.value);
     eosio_assert(itr != eventsdb.end(), "event does not exist");
     eosio_assert(itr->open, "cannot create ticket for closed event");
-    if(itr->inviteonly) {
+    if (itr->inviteonly)
+    {
         eosio_assert(has_auth(itr->eventowner), "invite only event");
     }
     auto itr2 = ticketdb.find(ticketid.value);
@@ -104,8 +116,7 @@ void rockup::transfer(name from, name to, asset quantity, string memo)
     size_t pos = memo.find(":");
     eosio_assert(pos != string::npos, "Invalid memo");
     name ticketid = name{memo.substr(0, pos)};
-    name eventid = name{memo.substr(pos+1)};
-
+    name eventid = name{memo.substr(pos + 1)};
 
     ticket_index ticketdb("rockup"_n, eventid.value);
     event_index eventdb("rockup"_n, "rockup"_n.value);
@@ -155,7 +166,6 @@ void rockup::we(name eventid)
     eosio_assert(itr != eventsdb.end(), "event does not exist");
     eosio_assert(!itr->open, "event must be closed");
 
-
     ticket_index ticketsdb(_code, eventid.value);
     auto itr2 = ticketsdb.begin();
     eosio_assert(itr2 == ticketsdb.end(), "ticket still exists");
@@ -163,24 +173,24 @@ void rockup::we(name eventid)
     eventsdb.erase(itr);
 }
 
-void rockup::testreset(name eventid)
-{
-    require_auth(_self);
-    event_index eventsdb(_code, _code.value);
-    ticket_index ticketdb(_code, eventid.value);
+// void rockup::testreset(name eventid)
+// {
+//     require_auth(_self);
+//     event_index eventsdb(_code, _code.value);
+//     ticket_index ticketdb(_code, eventid.value);
 
-    auto itr = eventsdb.begin();
-    while (itr != eventsdb.end())
-    {
-        itr = eventsdb.erase(itr);
-    }
+//     auto itr = eventsdb.begin();
+//     while (itr != eventsdb.end())
+//     {
+//         itr = eventsdb.erase(itr);
+//     }
 
-    auto itr2 = ticketdb.begin();
-    while (itr2 != ticketdb.end())
-    {
-        itr2 = ticketdb.erase(itr2);
-    }
-}
+//     auto itr2 = ticketdb.begin();
+//     while (itr2 != ticketdb.end())
+//     {
+//         itr2 = ticketdb.erase(itr2);
+//     }
+// }
 
 extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
 {
@@ -192,7 +202,7 @@ extern "C" void apply(uint64_t receiver, uint64_t code, uint64_t action)
     {
         switch (action)
         {
-            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(we)(testreset))
+            EOSIO_DISPATCH_HELPER(rockup, (createevent)(closeevent)(rollcall)(reqticket)(wipeticket)(we))
         }
     }
 }
