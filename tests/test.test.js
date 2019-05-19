@@ -20,7 +20,8 @@ describe(`contract`, () => {
         maxatt: 10,
         inviteonly: false,
         about: "whatever",
-        grace: 21600
+        grace: 21600,
+        etime: 1558248335
       }
     });
 
@@ -35,7 +36,8 @@ describe(`contract`, () => {
         att: 0,
         open: 1,
         inviteonly: 0,
-        grace: 21600
+        grace: 21600,
+        etime: 1558248335
       }
     ]);
   });
@@ -52,7 +54,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 1,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
       
     })
 
@@ -77,7 +80,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 1,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
     })
 
 
@@ -96,7 +100,8 @@ describe(`contract`, () => {
           maxatt: 12,
           inviteonly: false,
           about: "whatever",
-          grace: 21600
+          grace: 21600,
+          etime: 1558248335
         }
       });
     } catch (e) {
@@ -113,7 +118,8 @@ describe(`contract`, () => {
           att: 0,
           open: 1,
           inviteonly: 0,
-          grace: 21600
+          grace: 21600,
+          etime: 1558248335
 
         }
       ]);
@@ -403,7 +409,8 @@ describe(`contract`, () => {
       eventid: 'eos21',
       paid: 0,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
 
     })
 
@@ -470,7 +477,8 @@ describe(`contract`, () => {
       eventid: 'eos21',
       paid: 0,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
 
     })
   })
@@ -488,7 +496,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
 
     })
 
@@ -513,7 +522,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
 
     })
 
@@ -587,7 +597,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
 
     })
 
@@ -608,7 +619,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600
+      grace: 21600,
+      etime: 1558248335
 
     })
 

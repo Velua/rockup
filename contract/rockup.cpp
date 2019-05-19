@@ -8,7 +8,7 @@ using namespace std;
 //     require_auth(_self);
 // }
 
-void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxatt, bool inviteonly, string about, uint32_t grace)
+void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxatt, bool inviteonly, string about, uint32_t grace, uint32_t etime)
 {
     require_auth(owner);
     event_index eventsdb(_code, _code.value);
@@ -27,6 +27,7 @@ void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxa
         row.open = true;
         row.inviteonly = inviteonly;
         row.grace = grace;
+        row.etime = etime;
     });
 
     // action(
@@ -148,14 +149,18 @@ void rockup::wipeticket(name ticketid, name eventid)
     ticket_index ticketsdb(_code, eventid.value);
     auto itr = ticketsdb.find(ticketid.value);
     eosio_assert(itr != ticketsdb.end(), "ticket does not exist");
-    eosio_assert(!itr->paid, "cannot wipe a paid ticket");
 
     event_index eventsdb(_code, _code.value);
     auto itr2 = eventsdb.find(eventid.value);
     eosio_assert(itr2 != eventsdb.end(), "event does not exist");
 
-    eosio_assert(has_auth(itr->attendee) || !itr2->open, "only attendee or event owner can wipe closed");
-
+    eosio_assert(has_auth(itr->attendee) || !itr2->open, "only attendee can wipe ticket before event finished");
+    if (itr->paid)
+    {
+        eosio_assert(now() + itr2->grace < itr2->etime, "too late to cancel");
+        action(permission_level{_self, "active"_n}, "eosio.token"_n, "transfer"_n, std::make_tuple(_self, itr->attendee, itr2->stakeamount, "Ticket cancelled"))
+            .send();
+    }
     ticketsdb.erase(itr);
 }
 

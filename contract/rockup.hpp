@@ -14,7 +14,7 @@ public:
 
 
   ACTION testreset(eosio::name eventid);
-  ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt, bool inviteonly, std::string about, uint32_t grace);
+  ACTION createevent(eosio::name owner, eosio::name eventid, eosio::asset stakeamt, uint64_t maxatt, bool inviteonly, std::string about, uint32_t grace, uint32_t etime);
   ACTION reqticket(eosio::name attendee, eosio::name eventid, eosio::name ticketid);
   ACTION rollcall(eosio::name ticketid, eosio::name eventid, bool attended);
   ACTION wipeticket(eosio::name ticketid, eosio::name eventid);
@@ -33,6 +33,7 @@ private:
     bool open;
     bool inviteonly;
     uint32_t grace;
+    uint32_t etime;
 
     uint64_t primary_key() const { return eventid.value; }
   };
