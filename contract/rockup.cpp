@@ -3,11 +3,6 @@
 using namespace eosio;
 using namespace std;
 
-// void rockup::init(name name)
-// {
-//     require_auth(_self);
-// }
-
 void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxatt, bool inviteonly, string about, uint32_t grace, uint32_t etime)
 {
     require_auth(owner);
