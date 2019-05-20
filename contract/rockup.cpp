@@ -158,7 +158,7 @@ void rockup::wipeticket(name ticketid, name eventid)
     if (itr->paid)
     {
         eosio_assert(now() + itr2->grace < itr2->etime, "too late to cancel");
-        action(permission_level{_self, "active"_n}, "eosio.token"_n, "transfer"_n, std::make_tuple(_self, itr->attendee, itr2->stakeamount, "Ticket cancelled"))
+        action(permission_level{_self, "active"_n}, "eosio.token"_n, "transfer"_n, std::make_tuple(_self, itr->attendee, itr2->stakeamount, string("Cancelled ticket")))
             .send();
     }
     ticketsdb.erase(itr);
