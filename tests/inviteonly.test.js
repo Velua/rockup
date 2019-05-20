@@ -8,6 +8,11 @@ describe(`contract`, () => {
     jest.setTimeout(10000)
   });
 
+  const grace = 15
+  const now = Math.floor((new Date).getTime() / 1000);
+  const etime = now + 30
+
+
 
   test(`test2 can create an event`, async () => {
     await sendTransaction({
@@ -20,8 +25,8 @@ describe(`contract`, () => {
         maxatt: 10,
         inviteonly: true,
         about: "whatever",
-        grace: 21600,
-        etime: 1558248335
+        grace,
+        etime
       }
     });
 
@@ -36,8 +41,8 @@ describe(`contract`, () => {
         att: 0,
         open: 1,
         inviteonly: 1,
-        grace: 21600,
-        etime: 1558248335
+        grace,
+        etime
       }
     ]);
   })

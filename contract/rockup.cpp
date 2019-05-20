@@ -14,6 +14,8 @@ void rockup::createevent(name owner, name eventid, asset stakeamt, uint64_t maxa
     eosio_assert(stakeamt.amount > 0, "only positive quantity allowed");
     eosio_assert(stakeamt.symbol == EOS_SYMBOL, "only EOS tokens allowed");
 
+    eosio_assert(now() < etime, "etime in the past");
+
     eventsdb.emplace(owner, [&](auto &row) {
         row.eventid = eventid;
         row.stakeamount = stakeamt;
@@ -155,6 +157,10 @@ void rockup::wipeticket(name ticketid, name eventid)
         eosio_assert(now() + itr2->grace < itr2->etime, "too late to cancel");
         action(permission_level{_self, "active"_n}, "eosio.token"_n, "transfer"_n, std::make_tuple(_self, itr->attendee, itr2->stakeamount, string("Cancelled ticket")))
             .send();
+
+        eventsdb.modify(itr2, same_payer, [&](auto &row) {
+            row.att = itr2->att - 1;
+        });
     }
     ticketsdb.erase(itr);
 }

@@ -90,6 +90,22 @@ describe(`contract`, () => {
 
     const beforeBalance = await getBalance('test1')
 
+    const beforeTable = await getTable("events");
+
+    expect(beforeTable.rows).toEqual([
+      {
+        eventid: "newid",
+        stakeamount: "5.0000 EOS",
+        maxatt: 10,
+        eventowner: "test2",
+        att: 1,
+        open: 1,
+        inviteonly: 0,
+        grace,
+        etime
+      }
+    ]);
+
     await sendTransaction({
       name: 'wipeticket',
       actor: 'test1',
@@ -104,6 +120,22 @@ describe(`contract`, () => {
 
     const tableResult = await getTable('tickets', 'newid');
     expect(tableResult.rows).toEqual([]);
+
+    const afterTable = await getTable("events");
+
+    expect(afterTable.rows).toEqual([
+      {
+        eventid: "newid",
+        stakeamount: "5.0000 EOS",
+        maxatt: 10,
+        eventowner: "test2",
+        att: 0,
+        open: 1,
+        inviteonly: 0,
+        grace,
+        etime
+      }
+    ]);
 
   })
 

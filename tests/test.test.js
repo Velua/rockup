@@ -9,6 +9,10 @@ describe(`contract`, () => {
     jest.setTimeout(10000)
   });
 
+  const grace = 15
+  const now = Math.floor((new Date).getTime() / 1000);
+  const etime = now + 30
+
   test(`test1 can create an event`, async () => {
     await sendTransaction({
       name: `createevent`,
@@ -20,8 +24,8 @@ describe(`contract`, () => {
         maxatt: 10,
         inviteonly: false,
         about: "whatever",
-        grace: 21600,
-        etime: 1558248335
+        grace,
+        etime
       }
     });
 
@@ -36,8 +40,8 @@ describe(`contract`, () => {
         att: 0,
         open: 1,
         inviteonly: 0,
-        grace: 21600,
-        etime: 1558248335
+        grace,
+        etime
       }
     ]);
   });
@@ -54,9 +58,9 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 1,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
-      
+      grace,
+      etime
+
     })
 
     try {
@@ -80,8 +84,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 1,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
     })
 
 
@@ -100,8 +104,8 @@ describe(`contract`, () => {
           maxatt: 12,
           inviteonly: false,
           about: "whatever",
-          grace: 21600,
-          etime: 1558248335
+          grace,
+          etime
         }
       });
     } catch (e) {
@@ -118,8 +122,8 @@ describe(`contract`, () => {
           att: 0,
           open: 1,
           inviteonly: 0,
-          grace: 21600,
-          etime: 1558248335
+          grace,
+          etime
 
         }
       ]);
@@ -409,8 +413,8 @@ describe(`contract`, () => {
       eventid: 'eos21',
       paid: 0,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
 
     })
 
@@ -477,8 +481,8 @@ describe(`contract`, () => {
       eventid: 'eos21',
       paid: 0,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
 
     })
   })
@@ -496,8 +500,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
 
     })
 
@@ -522,8 +526,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
 
     })
 
@@ -597,8 +601,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
 
     })
 
@@ -619,8 +623,8 @@ describe(`contract`, () => {
       eventowner: 'test1',
       open: 0,
       inviteonly: 0,
-      grace: 21600,
-      etime: 1558248335
+      grace,
+      etime
 
     })
 
