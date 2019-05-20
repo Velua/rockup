@@ -1,5 +1,5 @@
 {
-    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon May 20 13:28:59 2019",
+    "____comment": "This file was generated with eosio-abigen. DO NOT EDIT Mon May 20 13:41:49 2019",
     "version": "eosio::abi/1.1",
     "structs": [
         {
@@ -129,16 +129,6 @@
             ]
         },
         {
-            "name": "testreset",
-            "base": "",
-            "fields": [
-                {
-                    "name": "eventid",
-                    "type": "name"
-                }
-            ]
-        },
-        {
             "name": "ticket",
             "base": "",
             "fields": [
@@ -205,11 +195,6 @@
         {
             "name": "rollcall",
             "type": "rollcall",
-            "ricardian_contract": ""
-        },
-        {
-            "name": "testreset",
-            "type": "testreset",
             "ricardian_contract": ""
         },
         {
