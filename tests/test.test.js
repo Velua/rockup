@@ -350,7 +350,7 @@ describe(`contract`, () => {
         }
       })
     } catch (e) {
-      expect(e.message).toBe(`assertion failure with message: only attendee or event owner can wipe closed`)
+      expect(e.message).toBe(`assertion failure with message: only attendee can wipe ticket before event finished`)
     }
 
 
@@ -378,7 +378,7 @@ describe(`contract`, () => {
         }
       })
     } catch (e) {
-      expect(e.message).toBe(`assertion failure with message: cannot wipe a paid ticket`)
+      expect(e.message).toBe(`assertion failure with message: only attendee can wipe ticket before event finished`)
     }
   })
 
